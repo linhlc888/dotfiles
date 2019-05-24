@@ -11,7 +11,6 @@ Plug 'https://github.com/vim-airline/vim-airline.git'
 Plug 'https://github.com/vim-airline/vim-airline-themes.git'
 Plug 'https://tpope.io/vim/eunuch.git'
 Plug 'https://github.com/tpope/vim-surround.git'
-" Plug 'tmhedberg/SimpylFold'
 Plug 'vim-scripts/indentpython.vim'
 Plug 'https://github.com/nvie/vim-flake8.git'
 Plug 'https://github.com/easymotion/vim-easymotion.git'
@@ -20,10 +19,8 @@ Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-easymotion.vim'
 Plug 'davidhalter/jedi-vim'
 Plug 'https://github.com/tell-k/vim-autopep8.git'
-Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf.vim'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'https://github.com/Shougo/denite.nvim.git'
+Plug 'https://github.com/kien/ctrlp.vim.git'
 call plug#end()
 augroup HelpInTabs
 	autocmd!
@@ -56,6 +53,7 @@ set ruler                                                                       
 set rulerformat=%l\:%c                                                          "better ruler format"
 " set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l\:%c%V%)
 highlight ColorColumn ctermbg=magenta
+set t_Co=256
 filetype plugin on
 
 "set shortcuts for window move
@@ -137,14 +135,12 @@ set clipboard=unnamed
 " Setting autopep8 to format python file
 autocmd FileType python nnoremap <S-f> :call Autopep8()<CR>
 let g:autopep8_disable_show_diff=1
-" Setting powerline
-set rtp+=/usr/local/lib/python3.7/site-packages/powerline/bindings/vim
-set laststatus=2
-set t_Co=256
 " Open Nerd when start vim without argument
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 " Set theme
+" Start ctrlp
+set rtp+=~/.vim/plugged/ctrlp.vim
 let g:molokai_original = 1
