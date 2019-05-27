@@ -4,7 +4,6 @@ set number
 call plug#begin()
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'scrooloose/nerdtree'
-Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
 Plug 'https://github.com/tpope/vim-fugitive.git'
 Plug 'https://tpope.io/vim/surround.git'
 Plug 'https://github.com/vim-airline/vim-airline.git'
@@ -21,6 +20,8 @@ Plug 'davidhalter/jedi-vim'
 Plug 'https://github.com/tell-k/vim-autopep8.git'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'https://github.com/kien/ctrlp.vim.git'
+Plug 'airblade/vim-gitgutter'
+Plug 'https://github.com/Valloric/YouCompleteMe.git'
 call plug#end()
 augroup HelpInTabs
 	autocmd!
@@ -144,3 +145,10 @@ let NERDTreeDirArrows = 1
 " Start ctrlp
 set rtp+=~/.vim/plugged/ctrlp.vim
 let g:molokai_original = 1
+"Setting git
+nmap ]h <Plug>GitGutterNextHunk
+nmap [h <Plug>GitGutterPrevHunk
+" close preview window on YCM
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+
