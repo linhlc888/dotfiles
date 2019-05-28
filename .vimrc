@@ -22,6 +22,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'https://github.com/kien/ctrlp.vim.git'
 Plug 'airblade/vim-gitgutter'
 Plug 'https://github.com/Valloric/YouCompleteMe.git'
+Plug 'https://github.com/vim-syntastic/syntastic.git'
 call plug#end()
 augroup HelpInTabs
 	autocmd!
@@ -41,6 +42,7 @@ set ignorecase
 set smartcase
 set incsearch
 set hlsearch
+set backspace=indent,eol,start
 " turn off search highlight
 " Set map leader
 let mapleader = ","
@@ -116,6 +118,17 @@ map zg/ <Plug>(incsearch-easymotion-stay)
 " setting python linter
 let g:syntastic_python_checkers = ["flake8"]
 autocmd BufWritePost *.py call flake8#Flake8()
+" shellcheck
+let g:syntastic_sh_checkers = ['shellcheck']
+let g:syntastic_sh_shellcheck_args = "-e SC2088"
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
 " setting system clipboard
 vmap <C-c> "+y
 let g:clipboard = {
