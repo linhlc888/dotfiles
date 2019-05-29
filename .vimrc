@@ -23,6 +23,7 @@ Plug 'https://github.com/kien/ctrlp.vim.git'
 Plug 'airblade/vim-gitgutter'
 Plug 'https://github.com/Valloric/YouCompleteMe.git'
 Plug 'https://github.com/vim-syntastic/syntastic.git'
+Plug 'crusoexia/vim-monokai'
 call plug#end()
 augroup HelpInTabs
 	autocmd!
@@ -129,6 +130,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_go_checkers = ['go', 'golint', 'govet']
 " setting system clipboard
 vmap <C-c> "+y
 let g:clipboard = {
@@ -155,13 +157,28 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 " Set theme
+let g:molokai_original = 1
 " Start ctrlp
 set rtp+=~/.vim/plugged/ctrlp.vim
-let g:molokai_original = 1
 "Setting git
 nmap ]h <Plug>GitGutterNextHunk
 nmap [h <Plug>GitGutterPrevHunk
-" close preview window on YCM
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_autoclose_preview_window_after_completion = 1
-
+" disable preview window
+set completeopt-=preview
+"go syntax highlight
+let g:go_highlight_operators = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_types = 1
+let g:go_highlight_build_constraints = 1
+"go shortcut
+au FileType go nmap <Leader>ds <Plug>(go-def-split)
+au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+au FileType go nmap <Leader>gd <Plug>(go-doc)
+au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+" change to  monokai
+syntax on
+color monokai
