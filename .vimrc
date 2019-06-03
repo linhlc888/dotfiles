@@ -182,3 +182,6 @@ au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
 " change to  monokai
 syntax on
 color monokai
+" format json
+com! FormatJSON %!python -m json.tool
+nnoremap <leader>j :%!python -m json.tool<CR>
