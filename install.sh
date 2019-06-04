@@ -1,13 +1,18 @@
 #!/bin/bash
 set -xe
 today=$(date +%F)
-if [ -e ~/.tmux.conf ];then
-  mv ~/.tmux.conf "~/.tmux.conf.$today.bak"
+if [ -f ~/.tmux.conf ];then
+  mv ~/.tmux.conf "$HOME/.tmux.conf.$today.bak"
   ln -sf ~/dotfiles/.tmux.conf ~/.tmux.conf
+else
+  ln -sf ~/dotfiles/.tmux.conf ~/.tmux.conf
+
 fi
 
-if [ -e ~/.vimrc ];then
-  mv ~/.vimrc "~/.vimrc.$today.bak"
+if [ -f ~/.vimrc ];then
+  mv ~/.vimrc "$HOME/.vimrc.$today.bak"
+  ln -sf ~/dotfiles/.vimrc ~/.vimrc
+else
   ln -sf ~/dotfiles/.vimrc ~/.vimrc
 fi
 
