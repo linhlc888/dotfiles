@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 set -xe
 today=$(date +%F)
 if [ -e ~/.tmux.conf ];then
