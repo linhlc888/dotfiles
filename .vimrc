@@ -185,3 +185,7 @@ color monokai
 " format json
 com! FormatJSON %!python -m json.tool
 nnoremap <leader>j :%!python -m json.tool<CR>
+augroup python
+   au! "clear augroup when reloading vimrc
+   autocmd FileType python set colorcolumn=80
+augroup END
