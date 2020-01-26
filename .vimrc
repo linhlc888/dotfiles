@@ -3,6 +3,15 @@ set enc=utf-8
 set number
 call plug#begin()
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+let g:deoplete#enable_at_startup = 1
+Plug 'deoplete-plugins/deoplete-go', { 'do': 'make'}
 Plug 'scrooloose/nerdtree'
 Plug 'https://github.com/tpope/vim-fugitive.git'
 Plug 'https://tpope.io/vim/surround.git'
@@ -11,19 +20,16 @@ Plug 'https://github.com/vim-airline/vim-airline-themes.git'
 Plug 'https://tpope.io/vim/eunuch.git'
 Plug 'https://github.com/tpope/vim-surround.git'
 Plug 'vim-scripts/indentpython.vim'
-Plug 'https://github.com/nvie/vim-flake8.git'
 Plug 'https://github.com/easymotion/vim-easymotion.git'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-easymotion.vim'
 Plug 'davidhalter/jedi-vim'
-Plug 'https://github.com/tell-k/vim-autopep8.git'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'https://github.com/kien/ctrlp.vim.git'
 Plug 'airblade/vim-gitgutter'
-Plug 'https://github.com/Valloric/YouCompleteMe.git'
-Plug 'https://github.com/vim-syntastic/syntastic.git'
 Plug 'crusoexia/vim-monokai'
+Plug 'w0rp/ale'
 call plug#end()
 augroup HelpInTabs
 	autocmd!
@@ -116,21 +122,6 @@ noremap <silent><expr> g/ incsearch#go(<SID>incsearch_config({'is_stay': 1}))
 map z/ <Plug>(incsearch-easymotion-/)
 map z? <Plug>(incsearch-easymotion-?)
 map zg/ <Plug>(incsearch-easymotion-stay)
-" setting python linter
-let g:syntastic_python_checkers = ["flake8"]
-autocmd BufWritePost *.py call flake8#Flake8()
-" shellcheck
-let g:syntastic_sh_checkers = ['shellcheck']
-let g:syntastic_sh_shellcheck_args = "-e SC2088"
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_go_checkers = ['go', 'golint', 'govet']
 " setting system clipboard
 vmap <C-c> "+y
 let g:clipboard = {
@@ -148,9 +139,6 @@ let g:clipboard = {
 
 " Clipboard 
 set clipboard=unnamed
-" Setting autopep8 to format python file
-autocmd FileType python nnoremap <S-f> :call Autopep8()<CR>
-let g:autopep8_disable_show_diff=1
 " Open Nerd when start vim without argument
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
@@ -173,6 +161,8 @@ let g:go_highlight_functions = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_types = 1
 let g:go_highlight_build_constraints = 1
+let g:go_auto_type_info = 1
+let g:go_fmt_command = "goimports"
 "go shortcut
 au FileType go nmap <Leader>ds <Plug>(go-def-split)
 au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
@@ -185,7 +175,29 @@ color monokai
 " format json
 com! FormatJSON %!python -m json.tool
 nnoremap <leader>j :%!python -m json.tool<CR>
-augroup python
-   au! "clear augroup when reloading vimrc
-   autocmd FileType python set colorcolumn=80
-augroup END
+"for ale
+let g:ale_linters = {
+            \'python':['flake8'],
+            \'go':['gometalinter'],
+            \'sh':['shellcheck']
+            \}
+let g:ale_fixers = {
+            \'*': ['remove_trailing_lines', 'trim_whitespace'],
+            \'python':['autopep8']
+            \}
+nmap <silent> <Leader>x <Plug>(ale_fix)
+
+let g:ale_completion_enabled = 1
+
+" Error and warning signs.
+let g:ale_sign_error = '⤫'
+let g:ale_sign_warning = '⚠'
+" Enable integration with airline.
+let g:airline#extensions#ale#enabled = 1
+" Dislable shellcheck
+let g:ale_sh_shellcheck_exclusions = 'SC2088'
+" Disable warnings about trailing whitespace for Python files.
+let b:ale_warn_about_trailing_whitespace = 0
+" for go
+let g:ale_go_gometalinter_options = '--fast --enable=staticcheck --enable=gosimple --enable=unused'
+let g:go_null_module_warning = 0
